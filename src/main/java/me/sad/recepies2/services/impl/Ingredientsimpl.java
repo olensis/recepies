@@ -3,12 +3,11 @@ package me.sad.recepies2.services.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import me.sad.recepies2.model.Ingredient;
 import me.sad.recepies2.services.FileServiceIngredient;
 import me.sad.recepies2.services.IngredientService;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 
 @Service

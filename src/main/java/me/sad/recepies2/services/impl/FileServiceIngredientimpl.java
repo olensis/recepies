@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 @Service
-public class FileServiceIngredientimpl  implements FileServiceIngredient {
+public class FileServiceIngredientimpl implements FileServiceIngredient {
     @Value("${path.to.ingredient.file}")
     private String ingredientFilePath;
     @Value("${name.of.ingredient.file}")
@@ -48,4 +48,5 @@ public class FileServiceIngredientimpl  implements FileServiceIngredient {
         }
     }
 }
+
 
