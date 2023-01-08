@@ -3,12 +3,13 @@ package me.sad.recepies2.services.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import me.sad.recepies2.model.Ingredient;
 import me.sad.recepies2.services.FileServiceIngredient;
 import me.sad.recepies2.services.IngredientService;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
+import javax.annotation.PostConstruct;
+
 
 @Service
 public class Ingredientsimpl implements IngredientService {
@@ -37,11 +38,6 @@ public class Ingredientsimpl implements IngredientService {
             }
         }
         return null;
-    }
-
-    @PostConstruct
-    private void init(){
-        readFromFile();
     }
     @Override
     public boolean deleteIngredient(Long count) {
