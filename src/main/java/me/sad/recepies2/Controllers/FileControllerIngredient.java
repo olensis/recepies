@@ -1,17 +1,16 @@
 package me.sad.recepies2.Controllers;
 
 import me.sad.recepies2.services.impl.FileServiceIngredientimpl;
+import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 
 @RestController
 @RequestMapping("/files/ingredient")
@@ -21,7 +20,7 @@ public class FileControllerIngredient {
     public FileControllerIngredient(FileServiceIngredientimpl fileServiceIngredientimpl) {
         this.fileServiceIngredientimpl = fileServiceIngredientimpl;
     }
-    @GetMapping("/export")
+    @GetMapping(value = "/export", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InputStreamResource> dowloadFileIngredient () throws FileNotFoundException {
         File file = fileServiceIngredientimpl.getDataFile();
         if (file.exists()) {
@@ -34,6 +33,19 @@ public class FileControllerIngredient {
         }else {
             return ResponseEntity.noContent().build();
         }
+    }
+
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> uploadFileIngredient(@RequestParam MultipartFile file) {
+        fileServiceIngredientimpl.cleanDataFile();
+        File fileIngredient = fileServiceIngredientimpl.getDataFile();
+        try (FileOutputStream fos = new FileOutputStream(fileIngredient)) {
+            IOUtils.copy(file.getInputStream(), fos);
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
 }

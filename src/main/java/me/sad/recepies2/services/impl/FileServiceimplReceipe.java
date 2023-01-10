@@ -41,8 +41,8 @@ public class FileServiceimplReceipe implements FileServiceReceipe {
     }
 
 
-
-    private boolean cleanDataFile() {
+@Override
+    public boolean cleanDataFile() {
         Path path = Path.of(dataFilePath, dataFileName);
         try {
             Files.deleteIfExists(path);

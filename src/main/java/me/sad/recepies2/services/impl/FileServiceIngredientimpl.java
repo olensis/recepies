@@ -40,8 +40,8 @@ public class FileServiceIngredientimpl implements FileServiceIngredient {
         return new File(ingredientFilePath + "/"+ ingredientFileName);
     }
 
-
-    private boolean cleanDataFile() {
+@Override
+    public boolean cleanDataFile() {
         Path path = Path.of(ingredientFilePath, ingredientFileName);
         try {
             Files.deleteIfExists(path);

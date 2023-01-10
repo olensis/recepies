@@ -8,4 +8,6 @@ public interface FileServiceIngredient {
     String readFromFile();
 
     File getDataFile();
+
+    boolean cleanDataFile();
 }
