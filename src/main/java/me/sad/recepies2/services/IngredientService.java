@@ -1,5 +1,8 @@
 package me.sad.recepies2.services;
 import me.sad.recepies2.model.Ingredient;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 public interface IngredientService {
@@ -11,4 +14,6 @@ public interface IngredientService {
 
     Ingredient getIngredients(Long count);
 
+
+    Ingredient editIngredient(long id, Ingredient newingredient);
 }

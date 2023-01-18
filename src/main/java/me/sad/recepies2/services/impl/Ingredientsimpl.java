@@ -4,21 +4,26 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.sad.recepies2.model.Ingredient;
-import me.sad.recepies2.services.FileServiceIngredient;
+import me.sad.recepies2.services.FileService;
 import me.sad.recepies2.services.IngredientService;
 import org.springframework.stereotype.Service;
-import java.util.HashMap;
+
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
 
 
 @Service
 public class Ingredientsimpl implements IngredientService {
     private static HashMap<Long, Ingredient> ingredients = new HashMap<Long, Ingredient>();
     private static long count = 0;
-    private final FileServiceIngredient fileServiceIngredient;
+    private final FileService fileServiceIngredient;
 
-    public Ingredientsimpl(FileServiceIngredient fileServiceIngredient) {
+    public Ingredientsimpl(FileService fileServiceIngredient) {
         this.fileServiceIngredient = fileServiceIngredient;
+    }
+    @PostConstruct
+    private void unit(){
+        readFromFile();
     }
 
 
@@ -59,23 +64,39 @@ public class Ingredientsimpl implements IngredientService {
     private void saveToFile() {
             try {
                 String json = new ObjectMapper().writeValueAsString(ingredients);
-                fileServiceIngredient.saveToFile(json);
+                fileServiceIngredient.saveIngredientToFile(json);
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
 
         }
 
-        private void readFromFile() {
-            String json = fileServiceIngredient.readFromFile();
-            try {
-                ingredients = new ObjectMapper().readValue(json, new TypeReference<HashMap<Long, Ingredient>>() {
+    private void readFromFile() {
+        try {
+            String json = fileServiceIngredient.readIngredientsFromFile();
+            if(!json.isBlank()){
+                ingredients = new ObjectMapper().readValue(json, new TypeReference<>() {
                 });
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+                count = ingredients.size();
             }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Ingredient editIngredient(long id, Ingredient newingredient) {
+        if (ingredients.containsKey(id)) {
+            ingredients.put(id, newingredient);
+            saveToFile();
+            return ingredients.get(id);
+        }
+        return null;
+    }
+
 
         }
 
-    }
+
 

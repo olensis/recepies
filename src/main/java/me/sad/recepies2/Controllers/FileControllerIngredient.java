@@ -1,6 +1,6 @@
 package me.sad.recepies2.Controllers;
 
-import me.sad.recepies2.services.impl.FileServiceIngredientimpl;
+import me.sad.recepies2.services.FileService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -15,14 +15,16 @@ import java.io.*;
 @RestController
 @RequestMapping("/files/ingredient")
 public class FileControllerIngredient {
-    private final FileServiceIngredientimpl fileServiceIngredientimpl;
+    private final FileService fileServiceIngredientimpl;
 
-    public FileControllerIngredient(FileServiceIngredientimpl fileServiceIngredientimpl) {
+    public FileControllerIngredient(FileService fileServiceIngredientimpl) {
         this.fileServiceIngredientimpl = fileServiceIngredientimpl;
     }
+
+
     @GetMapping(value = "/export", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InputStreamResource> dowloadFileIngredient () throws FileNotFoundException {
-        File file = fileServiceIngredientimpl.getDataFile();
+        File file = fileServiceIngredientimpl.getFileIngredient();
         if (file.exists()) {
             InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(file));
             return ResponseEntity.ok()
@@ -37,8 +39,8 @@ public class FileControllerIngredient {
 
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> uploadFileIngredient(@RequestParam MultipartFile file) {
-        fileServiceIngredientimpl.cleanDataFile();
-        File fileIngredient = fileServiceIngredientimpl.getDataFile();
+        fileServiceIngredientimpl.cleanIngredientFile();
+        File fileIngredient = fileServiceIngredientimpl.getFileIngredient();
         try (FileOutputStream fos = new FileOutputStream(fileIngredient)) {
             IOUtils.copy(file.getInputStream(), fos);
             return ResponseEntity.ok().build();

@@ -4,8 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.sad.recepies2.model.Ingredient;
 import me.sad.recepies2.services.IngredientService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 @RestController
@@ -26,6 +31,8 @@ public class IngredientController {
         ingredientService.addIngredients(ingredient);
         return ResponseEntity.ok(ingredient);
     }
+
+
 
     @GetMapping("/{count}")
     @Operation(summary = "Операция для получения ингредиента")

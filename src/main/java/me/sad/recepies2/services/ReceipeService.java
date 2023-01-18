@@ -2,6 +2,8 @@ package me.sad.recepies2.services;
 
 import me.sad.recepies2.model.Recipe;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Map;
 
 public interface ReceipeService {
@@ -13,4 +15,8 @@ public interface ReceipeService {
     boolean deleteRecipe(Long count);
 
     Recipe getRecipe(Long count);
+
+   File createRecipesTxtFile() throws FileNotFoundException;
+
+
 }
